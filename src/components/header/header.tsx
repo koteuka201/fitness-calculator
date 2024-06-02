@@ -1,5 +1,6 @@
 import React from "react";
 import { Logo } from "./logo/logo";
+import { Link } from "react-router-dom";
 
 export const Header=()=>{
     return(
@@ -8,11 +9,16 @@ export const Header=()=>{
                 <Logo/>
             </div>
             <div className="flex">
-                <span className="mr-20">
-                    Калькулятор приемов пищи
+                <span className="mr-20"  style={{cursor: 'pointer'}}>
+                    <Link to='/'>
+                        Калькулятор приемов пищи
+                    </Link>
+                    
                 </span>
-                <span className="">
-                    Рассчет норма калорий
+                <span style={{cursor: 'pointer'}}>
+                    <Link to='/'>
+                        Рассчет нормы калорий
+                    </Link>
                 </span>
             </div>
             <div className="w-[225px]"></div>
