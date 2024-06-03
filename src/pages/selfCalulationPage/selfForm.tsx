@@ -5,6 +5,7 @@ import { Label } from "@radix-ui/react-label";
 import { Slider } from "@/components/ui/slider";
 import { activityDescription } from "@/helpers/activityDescription";
 import { calculateCalories } from "@/helpers/calculateCalories";
+import { CircleChart } from "./circleChart/circleChart";
 
 export type Typedata={
     activity: number,
@@ -184,20 +185,14 @@ export const SelfForm=()=>{
                 <span className="ml-[2px]">РАССЧИТАТЬ</span>
             </Button>
             {isSubmit &&
-                <div className="mb-[100px]">
-                    <div>
-                        калории {result.calories}
+                <>  <div className="text-center text-gray-600">
+                        Ваша индивидуальная суточная норма калорий: {result.calories.toFixed(2)} кКал <br></br>
+                        Из которых:
                     </div>
-                    <div>
-                        белки {result.protein}
+                    <div className="mb-[100px] ">
+                        <CircleChart result={result}/>
                     </div>
-                    <div>
-                        жиры {result.fat}
-                    </div>
-                    <div>
-                        углеводы {result.carb}
-                    </div>
-                </div>
+                </>
             }
             
         </form>

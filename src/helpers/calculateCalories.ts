@@ -9,8 +9,9 @@ export function calculateCalories(data: Typedata) : TypeCalculate {
         carb: 0
     }
     if(data.gender==='male'){
+        
         nutrients.calories=(88.36 + (13.4 * data.weight) + (4.8 * data.height) - (5.7 * data.age))*(data.activity/100 +1)
-        // debugger
+        
         if(data.target==='loose'){
             nutrients.calories*=0.83
         }
