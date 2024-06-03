@@ -1,15 +1,43 @@
 import React, { useState } from "react";
-import { Card, CardContent} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
 import { Slider } from "@/components/ui/slider";
 import { activityDescription } from "@/helpers/activityDescription";
+import { calculateCalories } from "@/helpers/calculateCalories";
+
+export type Typedata={
+    activity: number,
+    gender: string,
+    target: string,
+    age: number,
+    height: number,
+    weight: number
+}
+
+export type TypeCalculate={
+    calories: number,
+    protein: number,
+    fat: number,
+    carb: number
+}
 
 export const SelfForm=()=>{
-
     const [sliderValue, setSliderValue]=useState<number[]>([50])
     const [gender, setGender]=useState<string>('')
+    const [target, setTarget]=useState('')//loose, loyal, gain,
+    const [isSubmit,setIsSubmit]=useState(false)
+
+    const [age,setAge]=useState(0)
+    const [height, setHeight]=useState(0)
+    const [weight, setWeight]=useState(0)
+
+    const [result, setResult] = useState<TypeCalculate>({
+        calories: 0,
+        protein: 0,
+        fat: 0,
+        carb: 0
+    });
 
     const handleSliderChange = (newValue: number[]) => {
         setSliderValue(newValue);
@@ -20,9 +48,33 @@ export const SelfForm=()=>{
         setGender(gender)
     }
 
+    const handleTargetChange=(target: string, e: React.FormEvent<HTMLButtonElement>)=>{
+        e.preventDefault()
+        setTarget(target)
+    }
+
+    const handleSubmit=(e: React.FormEvent<HTMLFormElement>)=>{
+        e.preventDefault()
+
+        setIsSubmit(true);
+
+        let data: Typedata = {
+            activity: sliderValue[0],
+            gender: gender,
+            target: target,
+            age: age,
+            height: height,
+            weight: weight,
+            
+        };
+        // let result: TypeCalculate = calculateCalories(data);
+        setResult(calculateCalories(data))
+        
+    }
 
     return(
-        <form className="mt-[55px] text-start font-bold w-[536px]">
+        <form className="mt-[55px] text-start font-bold w-[536px]" onSubmit={handleSubmit}>
+            
             <div>
                 <span className="text-[30px]">&#8226;</span>
                 <span className="text-xl ml-2">Общая информация:</span>
@@ -37,40 +89,80 @@ export const SelfForm=()=>{
                         onClick={(e)=>handleGenderChange('male',e)}
                     >Мужчина</Button>
                 </div>
-                <div className=" ml-[26px] mt-[24px] flex justify-between">
-                    <div>
-                        <Label htmlFor="age" className="text-sm text-slate-400 font-normal">Возраст, лет</Label>
-                        <Input id="age" type='number' placeholder="0" min='0' className="w-[150px]"></Input>
-                    </div>
-                    <div >
-                        <Label htmlFor="h" className="text-sm text-slate-400 font-normal">Рост, см</Label>
-                        <Input id="h" type='number' placeholder="0" min='0' className="w-[150px]"></Input>
-                    </div>
-                    <div >
-                        <Label htmlFor="weight" className="text-sm text-slate-400 font-normal">Вес, кг</Label>
-                        <Input id="weight" type='number' placeholder="0" min='0' className="w-[150px]"></Input>
-                    </div>
-                </div>
+            </div>
+            
+            <div className=" ml-[26px] mt-[24px] flex justify-between">
                 <div>
-                    <span className="text-[30px]">&#8226;</span>
-                    <span className="text-xl ml-2">Дневная активность:</span>
-                    <Slider 
-                        className="ml-[20px] mt-[20px] w-[516px]"
-                        value={sliderValue}
-                        min={0}
-                        max={100}
-                        onValueChange={handleSliderChange}
-                    ></Slider>
-                    <div className="ml-[20px] mt-[20px] font-normal">
-                        <div>
-                            {activityDescription(sliderValue[0]).title}
-                        </div>
-                        <div>
-                            {activityDescription(sliderValue[0]).description}
-                        </div>
+                    <Label htmlFor="age" className="text-sm text-slate-400 font-normal">Возраст, лет</Label>
+                    <Input id="age" type='number' placeholder="0" min='0' className="w-[150px]" onChange={(e)=>setAge(parseInt(e.target.value))}></Input>
+                </div>
+                <div >
+                    <Label htmlFor="height" className="text-sm text-slate-400 font-normal">Рост, см</Label>
+                    <Input id="height" type='number' placeholder="0" min='0' className="w-[150px]" onChange={(e)=>setHeight(parseInt(e.target.value))}></Input>
+                </div>
+                <div >
+                    <Label htmlFor="weight" className="text-sm text-slate-400 font-normal">Вес, кг</Label>
+                    <Input id="weight" type='number' placeholder="0" min='0' className="w-[150px]" onChange={(e)=>setWeight(parseInt(e.target.value))}></Input>
+                </div>
+            </div>
+            <div>
+                <span className="text-[30px]">&#8226;</span>
+                <span className="text-xl ml-2">Дневная активность:</span>
+                <Slider 
+                    className="ml-[20px] mt-[20px] w-[516px]"
+                    value={sliderValue}
+                    min={20}
+                    max={90}
+                    onValueChange={handleSliderChange}
+                ></Slider>
+                <div className="ml-[20px] mt-[20px] font-normal">
+                    <div>
+                        {activityDescription(sliderValue[0]).title}
+                    </div>
+                    <div>
+                        {activityDescription(sliderValue[0]).description}
                     </div>
                 </div>
             </div>
+            <div>
+                <span className="text-[30px]">&#8226;</span>
+                <span className="text-xl ml-2">Ваша цель:</span>
+                <div className="flex ml-[26px] mt-[15px]">
+                    <Button 
+                            className={`w-[150px] ${target === 'loose' ? 'bg-green-200 text-black border border-green-800 hover:bg-green-300' : 'bg-slate-500 text-white'}`}
+                            onClick={(e)=>handleTargetChange('loose',e)}
+                    >Сбросить вес</Button>
+                    <Button 
+                        className={`ml-[30px] w-[150px] ${target === 'loyal' ? 'bg-green-200 text-black border border-green-800 hover:bg-green-300' : 'bg-slate-500 text-white'}`}
+                        onClick={(e)=>handleTargetChange('loyal',e)}
+                    >Поддержать вес</Button>
+                    <Button 
+                        className={`ml-[30px] w-[150px] ${target === 'gain' ? 'bg-green-200 text-black border border-green-800 hover:bg-green-300' : 'bg-slate-500 text-white'}`}
+                        onClick={(e)=>handleTargetChange('gain',e)}
+                    >Набрать вес</Button>
+                </div>
+            </div>
+            <Button type="submit" className="w-[540px] mt-[50px] mb-6">
+                <img src="/assets/selfCalculator/calculator.svg" className="w-[22px] h-[22px]" alt="" />
+                <span className="ml-[2px]">РАССЧИТАТЬ</span>
+            </Button>
+            {isSubmit &&
+                <div className="mb-[100px]">
+                    <div>
+                        калории {result.calories}
+                    </div>
+                    <div>
+                        белки {result.protein}
+                    </div>
+                    <div>
+                        жиры {result.fat}
+                    </div>
+                    <div>
+                        углеводы {result.carb}
+                    </div>
+                </div>
+            }
+            
         </form>
     )
 }
