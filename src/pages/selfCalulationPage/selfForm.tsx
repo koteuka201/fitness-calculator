@@ -23,10 +23,12 @@ export type TypeCalculate={
 }
 
 export const SelfForm=()=>{
+
     const [sliderValue, setSliderValue]=useState<number[]>([50])
     const [gender, setGender]=useState<string>('')
-    const [target, setTarget]=useState('')//loose, loyal, gain,
+    const [target, setTarget]=useState('loyal')
     const [isSubmit,setIsSubmit]=useState(false)
+    const [isTapped, setIsTapped]=useState(false)
 
     const [age,setAge]=useState(0)
     const [height, setHeight]=useState(0)
@@ -55,20 +57,22 @@ export const SelfForm=()=>{
 
     const handleSubmit=(e: React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault()
+        setIsTapped(true)
+        if(gender!='' && (age && height && weight)!=0 && (!Number.isNaN(age) && !Number.isNaN(height)&& !Number.isNaN(weight))){
+            setIsSubmit(true);
 
-        setIsSubmit(true);
-
-        let data: Typedata = {
-            activity: sliderValue[0],
-            gender: gender,
-            target: target,
-            age: age,
-            height: height,
-            weight: weight,
-            
-        };
-        // let result: TypeCalculate = calculateCalories(data);
-        setResult(calculateCalories(data))
+            let data: Typedata = {
+                activity: sliderValue[0],
+                gender: gender,
+                target: target,
+                age: age,
+                height: height,
+                weight: weight,
+                
+            };
+            setResult(calculateCalories(data))
+        }
+        
         
     }
 
@@ -88,23 +92,56 @@ export const SelfForm=()=>{
                         className={`ml-[30px] w-[150px] ${gender === 'male' ? 'bg-green-200 text-black border border-green-800 hover:bg-green-300' : 'bg-slate-500 text-white'}`}
                         onClick={(e)=>handleGenderChange('male',e)}
                     >Мужчина</Button>
+                    
                 </div>
+                {isTapped && gender==='' &&
+                    <div className="text-red-500 ml-[26px] mt-2">Выберите пол!</div>
+                }
             </div>
             
             <div className=" ml-[26px] mt-[24px] flex justify-between">
                 <div>
                     <Label htmlFor="age" className="text-sm text-slate-400 font-normal">Возраст, лет</Label>
-                    <Input id="age" type='number' placeholder="0" min='0' className="w-[150px]" onChange={(e)=>setAge(parseInt(e.target.value))}></Input>
+                    <Input 
+                        id="age" 
+                        type='number' 
+                        min='0' 
+                        max='100'
+                        className="w-[150px]" 
+                        value={age} 
+                        onChange={(e)=>setAge(parseInt(e.target.value))}
+                    >
+                    </Input>
                 </div>
                 <div >
                     <Label htmlFor="height" className="text-sm text-slate-400 font-normal">Рост, см</Label>
-                    <Input id="height" type='number' placeholder="0" min='0' className="w-[150px]" onChange={(e)=>setHeight(parseInt(e.target.value))}></Input>
+                    <Input 
+                        id="height" 
+                        type='number' 
+                        min='0' 
+                        className="w-[150px]" 
+                        value={height} 
+                        onChange={(e)=>setHeight(parseInt(e.target.value))}
+                    >
+                    </Input>
                 </div>
                 <div >
                     <Label htmlFor="weight" className="text-sm text-slate-400 font-normal">Вес, кг</Label>
-                    <Input id="weight" type='number' placeholder="0" min='0' className="w-[150px]" onChange={(e)=>setWeight(parseInt(e.target.value))}></Input>
+                    <Input 
+                        id="weight"
+                        type='number' 
+                        min='0' 
+                        className="w-[150px]" 
+                        value={weight} 
+                        onChange={(e)=>setWeight(parseInt(e.target.value))}
+
+                    >
+                    </Input>
                 </div>
             </div>
+            {isTapped && ((age && height && weight)===0 || !(!Number.isNaN(age) && !Number.isNaN(height)&& !Number.isNaN(weight))) &&
+                <div className="text-red-500 ml-[26px] mt-2">Проверьте правильность введенных полей!</div>
+            }
             <div>
                 <span className="text-[30px]">&#8226;</span>
                 <span className="text-xl ml-2">Дневная активность:</span>

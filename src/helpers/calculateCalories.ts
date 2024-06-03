@@ -8,7 +8,6 @@ export function calculateCalories(data: Typedata) : TypeCalculate {
         fat: 0,
         carb: 0
     }
-    console.log('asd')
     if(data.gender==='male'){
         nutrients.calories=(88.36 + (13.4 * data.weight) + (4.8 * data.height) - (5.7 * data.age))*(data.activity/100 +1)
         // debugger
