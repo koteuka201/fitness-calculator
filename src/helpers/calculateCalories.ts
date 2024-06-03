@@ -19,8 +19,8 @@ export function calculateCalories(data: Typedata) : TypeCalculate {
             nutrients.calories*=1.17
         }
 
-        nutrients.protein= nutrients.calories * 0.16/4
-        nutrients.fat= nutrients.calories *0.29/9
+        nutrients.protein= nutrients.calories * 0.15/4
+        nutrients.fat= nutrients.calories *0.30/9
         nutrients.carb= nutrients.calories *0.55/4
     }
     else{
@@ -33,9 +33,9 @@ export function calculateCalories(data: Typedata) : TypeCalculate {
             nutrients.calories*=1.17
         }
         
-        nutrients.protein= nutrients.calories * 0.25/4.1
-        nutrients.fat= nutrients.calories *0.25/9.3
-        nutrients.carb= nutrients.calories *0.5/4.1
+        nutrients.protein= nutrients.calories * 0.15/4.1
+        nutrients.fat= nutrients.calories *0.30/9.3
+        nutrients.carb= nutrients.calories *0.55/4.1
     }
 
 

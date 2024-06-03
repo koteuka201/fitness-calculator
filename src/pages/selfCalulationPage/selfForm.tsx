@@ -186,7 +186,7 @@ export const SelfForm=()=>{
             </Button>
             {isSubmit &&
                 <>  <div className="text-center text-gray-600">
-                        Ваша индивидуальная суточная норма калорий: {result.calories.toFixed(2)} кКал <br></br>
+                        Ваша индивидуальная суточная норма калорий: <span className="text-slate-500">{result.calories.toFixed(2)}</span> кКал <br></br>
                         Из которых:
                     </div>
                     <div className="mb-[100px] ">
