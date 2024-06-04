@@ -5,7 +5,9 @@ import { Label } from "@radix-ui/react-label";
 import { Slider } from "@/components/ui/slider";
 import { activityDescription } from "@/helpers/activityDescription";
 import { calculateCalories } from "@/helpers/calculateCalories";
-import { CircleChart } from "./circleChart/circleChart";
+import { CircleChart } from "./results/circleChart";
+import { IMB } from "./results/IMBCard";
+import { GetIMB } from "@/helpers/getIMB";
 
 export type Typedata={
     activity: number,
@@ -23,6 +25,11 @@ export type TypeCalculate={
     carb: number
 }
 
+//omit
+type TypeImb={
+    height: number,
+    weight: number
+}
 export const SelfForm=()=>{
 
     const [sliderValue, setSliderValue]=useState<number[]>([50])
@@ -35,6 +42,10 @@ export const SelfForm=()=>{
     const [height, setHeight]=useState(0)
     const [weight, setWeight]=useState(0)
 
+    const [imb,setImb]=useState<TypeImb>({
+        height: 0,
+        weight: 0
+    })
     const [result, setResult] = useState<TypeCalculate>({
         calories: 0,
         protein: 0,
@@ -71,7 +82,13 @@ export const SelfForm=()=>{
                 weight: weight,
                 
             };
+
+            let imbData: TypeImb={
+                height: height,
+                weight: weight
+            }
             setResult(calculateCalories(data))
+            setImb(imbData)
         }
         
         
@@ -180,19 +197,19 @@ export const SelfForm=()=>{
                     >Набрать вес</Button>
                 </div>
             </div>
-            <Button type="submit" className="w-[540px] mt-[50px] mb-6">
+            <Button type="submit" className="w-[540px] mt-[50px]">
                 <img src="/assets/selfCalculator/calculator.svg" className="w-[22px] h-[22px]" alt="" />
                 <span className="ml-[2px]">РАССЧИТАТЬ</span>
             </Button>
-            {isSubmit &&
-                <>  <div className="text-center text-gray-600">
-                        Ваша индивидуальная суточная норма калорий: <span className="text-slate-500">{result.calories.toFixed(2)}</span> кКал <br></br>
-                        Из которых:
-                    </div>
+            {isSubmit && 
+                <div className="mt-[30px]">  
+                    <span className="text-[30px]">&#8226;</span>
+                    <span className="text-xl ml-2">Ваш результат:</span>
                     <div className="mb-[100px] ">
+                        <IMB IMB={GetIMB(imb.weight,imb.height)}/>
                         <CircleChart result={result}/>
                     </div>
-                </>
+                </div>
             }
             
         </form>
