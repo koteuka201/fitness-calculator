@@ -1,74 +1,66 @@
-import { Card } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import React, { useEffect, useState } from "react";
 
 interface IProps{
     IMB: string
 }
 
-interface IIMBStyles{
-    style: string,
+interface IStyles{
+    borderColor: string,
+    textColor: string,
     description: string
 }
 
-export function IMBStyles(IBM:string){
-    const [style, setBorderColor]=useState<string>('')
-    const [description, setDesc]=useState<string>('')
-    if(Number(IMB)<=18){
-        setBorderColor('blue-400')
-        setDesc('Недостаточный вес')
-    } else if (Number(IMB)>18 && Number(IMB)<=25) {
-        setBorderColor('green-400')
-        setDesc('Норма')
-    } else if (Number(IMB)>25 && Number(IMB)<=30){
-        setBorderColor('yellow-400')
-        setDesc('Избыточный вес')
-    }
-    else{
-        setBorderColor('red-500')
-        setDesc('Ожирение')
-    }
-    return {
-        style,
-        description
-    }
-}
+export const IMBCard: React.FC<IProps>=({IMB})=>{
 
-export const IMB: React.FC<IProps>=({IMB})=>{
-
-    const [style, setBorderColor]=useState<string>('')
-    const [description, setDesc]=useState<string>('')
-    
-    // const [data, setData]=useState<IIMBStyles>({
-    //     style: '',
-    //     description: ''
-    // })
+    const [style, setStyle]=useState<string>('')
+    const [description, setdescription]=useState<string>('')
+    // debugger
+    const [styles, setStyles]=useState<IStyles>({
+        borderColor: '',
+        textColor: '',
+        description: ''
+    })
     useEffect(()=>{
+        
         if(Number(IMB)<=18){
-            setBorderColor('blue-400')
-            setDesc('Недостаточный вес')
+            setStyles({
+                borderColor: 'border-blue-400',
+                textColor: 'text-blue-400',
+                description: 'Недостаточный вес'
+            })
         } else if (Number(IMB)>18 && Number(IMB)<=25) {
-            setBorderColor('green-400')
-            setDesc('Норма')
+            setStyles({
+                borderColor: 'border-green-400',
+                textColor: 'text-green-400',
+                description: 'Норма'
+            })
         } else if (Number(IMB)>25 && Number(IMB)<=30){
-            setBorderColor('yellow-400')
-            setDesc('Избыточный вес')
+            setStyles({
+                borderColor: 'border-yellow-400',
+                textColor: 'text-yellow-700',
+                description: 'Избыточный вес'
+            })
         }
         else{
-            setBorderColor('red-500')
-            setDesc('Ожирение')
+            setStyles({
+                borderColor: 'border-red-400',
+                textColor: 'text-red-400',
+                description: 'Ожирение'
+            })
         }    
-    })
+    },[IMB])
     
-
+    
     return(
-        <Card className='p-5 shadow-md border-0'>
+        <Card className='p-5 shadow-md border-0 mt-[15px]'>
             
-            <div className="text-[18px] text-center">
+            <CardTitle className="text-[18px] text-center mb-2">
                 Ваш ИМТ
-            </div>
+            </CardTitle>
             <div className="flex justify-center">
                 <div 
-                    className={`text-[18px] border border-[5px] border-${style} w-[75px] h-[75px] flex items-center justify-center text-[20px]`}
+                    className={`border-[5px] ${styles.borderColor} w-[75px] h-[75px] flex items-center justify-center text-[20px]`}
                     style={{
                         borderRadius: '50%',
                     }}    
@@ -76,8 +68,8 @@ export const IMB: React.FC<IProps>=({IMB})=>{
                     {IMB}
                 </div>
             </div>
-            <div className="text-[15px] text-center font-normal">
-                Норма
+            <div className={`${styles.textColor} text-[15px] text-center font-bold mt-2`}>
+                {styles.description}
             </div>
         </Card>
     )

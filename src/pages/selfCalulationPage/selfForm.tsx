@@ -6,10 +6,10 @@ import { Slider } from "@/components/ui/slider";
 import { activityDescription } from "@/helpers/activityDescription";
 import { calculateCalories } from "@/helpers/calculateCalories";
 import { CircleChart } from "./results/circleChart";
-import { IMB } from "./results/IMBCard";
+import { IMBCard } from "./results/IMBCard";
 import { GetIMB } from "@/helpers/getIMB";
 
-export type Typedata={
+export interface Idata{
     activity: number,
     gender: string,
     target: string,
@@ -18,18 +18,15 @@ export type Typedata={
     weight: number
 }
 
-export type TypeCalculate={
+export interface ICalculate{
     calories: number,
     protein: number,
     fat: number,
     carb: number
 }
 
-//omit
-type TypeImb={
-    height: number,
-    weight: number
-}
+interface IImb extends Pick <Idata,'height' | 'weight'>{}
+
 export const SelfForm=()=>{
 
     const [sliderValue, setSliderValue]=useState<number[]>([50])
@@ -42,11 +39,11 @@ export const SelfForm=()=>{
     const [height, setHeight]=useState(0)
     const [weight, setWeight]=useState(0)
 
-    const [imb,setImb]=useState<TypeImb>({
+    const [imb,setImb]=useState<IImb>({
         height: 0,
         weight: 0
     })
-    const [result, setResult] = useState<TypeCalculate>({
+    const [result, setResult] = useState<ICalculate>({
         calories: 0,
         protein: 0,
         fat: 0,
@@ -73,7 +70,7 @@ export const SelfForm=()=>{
         if(gender!='' && (age && height && weight)!=0 && (!Number.isNaN(age) && !Number.isNaN(height)&& !Number.isNaN(weight))){
             setIsSubmit(true);
 
-            let data: Typedata = {
+            let data: Idata = {
                 activity: sliderValue[0],
                 gender: gender,
                 target: target,
@@ -83,7 +80,7 @@ export const SelfForm=()=>{
                 
             };
 
-            let imbData: TypeImb={
+            let imbData: IImb={
                 height: height,
                 weight: weight
             }
@@ -206,7 +203,7 @@ export const SelfForm=()=>{
                     <span className="text-[30px]">&#8226;</span>
                     <span className="text-xl ml-2">Ваш результат:</span>
                     <div className="mb-[100px] ">
-                        <IMB IMB={GetIMB(imb.weight,imb.height)}/>
+                        <IMBCard IMB={GetIMB(imb.weight,imb.height)}/>
                         <CircleChart result={result}/>
                     </div>
                 </div>
