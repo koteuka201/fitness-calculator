@@ -10,14 +10,14 @@ export const Header=()=>{
             </div>
             <div className="flex">
                 <span className="mr-20"  style={{cursor: 'pointer'}}>
-                    <Link to='/'>
+                    <Link to='/selfCalculation'>
                         Калькулятор приемов пищи
                     </Link>
                     
                 </span>
                 <span style={{cursor: 'pointer'}}>
-                    <Link to='/'>
-                        Рассчет нормы калорий
+                    <Link to='/foodCalculation'>
+                    Калькулятор нормы калорий
                     </Link>
                 </span>
             </div>

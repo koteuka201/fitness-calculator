@@ -86,11 +86,20 @@ export const SelfForm=()=>{
             }
             setResult(calculateCalories(data))
             setImb(imbData)
+
+            setTimeout(() => {
+                const element = document.getElementById('result')
+
+                if(element){
+                    element.scrollIntoView({ behavior: 'smooth' })
+                }
+            }, 1);
+            
+            
         }
         
         
     }
-
     return(
         <form className="mt-[55px] text-start font-bold w-[536px]" onSubmit={handleSubmit}>
             
@@ -199,7 +208,7 @@ export const SelfForm=()=>{
                 <span className="ml-[2px]">РАССЧИТАТЬ</span>
             </Button>
             {isSubmit && 
-                <div className="mt-[30px]">  
+                <div id="result" className="mt-[30px]">  
                     <span className="text-[30px]">&#8226;</span>
                     <span className="text-xl ml-2">Ваш результат:</span>
                     <div className="mb-[100px] ">
