@@ -2,12 +2,13 @@ import React,{useEffect, useState} from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SelectComponent, IOption } from "./select";
 import { Input } from "@/components/ui/input";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Menu, CirclePlus, EggFried, Beef, Apple } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { MealTable } from "./mealTable";
+import { table } from "console";
 
-
-
- 
-
-interface ITableItem {
+export interface ITableItem {
     sign: string;
     num: string;
     name: string;
@@ -22,8 +23,22 @@ interface IStockItem extends ITableItem {
     label: string;
 }
 
+export interface INutric{
+    protein: number,
+    fat: number,
+    carb: number,
+    kcal: number
+}
+
+// export interface IMeal extends Pick<ITableItem,'name'|'weight'>{} 
+
 export const MainTable=()=>{
 
+    const [mealAdded, setMealAdded]=useState({
+        breakfast: false,
+        lunch: false,
+        dinner: false
+    })
     const [isSelected,setIsSelected]=useState(false)
     const [weight, setWeight]=useState<number>(100)
     const [stockItem, setStockItem]=useState<IStockItem>({
@@ -49,8 +64,11 @@ export const MainTable=()=>{
         kcal: 0
     })
     const [tableItems, setTableItems] = useState<ITableItem[]>([])
+    const [tableBreakfast, setTableBreakfast] = useState<ITableItem[]>([])
+    const [tableLunch, setTableLunch] = useState<ITableItem[]>([])
+    const [tableDinner, setTableDinner] = useState<ITableItem[]>([])
 
-    const [totals, setTotals] = useState({
+    const [totals, setTotals] = useState<INutric>({
         protein: 0,
         fat: 0,
         carb: 0,
@@ -58,7 +76,6 @@ export const MainTable=()=>{
     })
 
     const setItemToAddTable = (selectedProduct: IOption | null) => {
-        
         if (selectedProduct) {
             setIsSelected(true)
             setNewItem({
@@ -84,6 +101,19 @@ export const MainTable=()=>{
             })
             
         }
+    }
+
+    const handleSetBreakfast=()=>{
+        if(tableItems.length>0){
+        
+            setTableBreakfast(tableItems)
+    
+            setMealAdded({
+                ...mealAdded,
+                breakfast: true
+            })
+        }
+        
     }
 
     const handlePlusItem=()=>{
@@ -134,6 +164,36 @@ export const MainTable=()=>{
 
     return(
         <div className="mt-[36px]">
+            <div className="flex justify-end">
+                <DropdownMenu >
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="outline" className="border-0 p-0 w-[24px] h-[24px]"><Menu/></Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-[200px]">
+                        <DropdownMenuLabel className="text-[12px]">
+                            Добавить в рацион
+                        </DropdownMenuLabel>
+                        <DropdownMenuSeparator/>
+                        <DropdownMenuGroup>
+                            <DropdownMenuItem onClick={handleSetBreakfast}>
+                                <EggFried className="w-[16px] h-[16px]"/>
+                                <span className="text-gray-500 font-semibold ml-1">Завтрак</span>
+                                <DropdownMenuShortcut><CirclePlus className="cursor-pointer w-[20px] h-[20px]"/></DropdownMenuShortcut>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                                <Beef className="w-[16px] h-[16px]"/>
+                                <span className="text-gray-500 font-semibold ml-1">Обед</span>
+                                <DropdownMenuShortcut><CirclePlus className="cursor-pointer w-[20px] h-[20px]"/></DropdownMenuShortcut>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                                <Apple className="w-[16px] h-[16px]"/>
+                                <span className="text-gray-500 font-semibold ml-1">Ужин</span>
+                                <DropdownMenuShortcut><CirclePlus className="cursor-pointer w-[20px] h-[20px]"/></DropdownMenuShortcut>
+                            </DropdownMenuItem>
+                        </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
             <Table className="border border-b-black border-l-0 border-r-0 border-t-0 border-opacity-[10px]">
                 <TableHeader>
                     <TableRow>
@@ -167,13 +227,11 @@ export const MainTable=()=>{
                     ))}
                 </TableBody>
             </Table>
-            {/* <div className="border border-b-black opacity-10"></div> */}
             <div className="flex ml-[16px] w-[350px] justify-between mt-[10px]">
                 <img className="cursor-pointer" onClick={handlePlusItem} src="/assets/foodCalculator/plus-circle.svg" alt="plus" />
                 <div className="w-[170px] h-[30px]">
                     <SelectComponent onChange={setItemToAddTable} />
                 </div>
-                
                 <Input
                     value={weight}
                     type="number"
@@ -181,8 +239,8 @@ export const MainTable=()=>{
                     className="w-[70px] text-end h-[38px]"
                     onChange={(e) => setWeight(Number(e.target.value))}
                 />
-            </div>
-            {tableItems.length>0 &&
+            </div>{
+            tableItems.length>0 &&
                 <Table className="mt-[10px] text-[16px] font-bold border border-t-black border-l-0 border-r-0 border-b-0">
                     <TableBody>
                         <TableRow>
@@ -198,6 +256,12 @@ export const MainTable=()=>{
                     </TableBody>
                 </Table>
             }
+            <div className="flex justify-center mt-[56px]">
+                
+                {mealAdded.breakfast &&
+                    <MealTable label={'Завтрак'} meal={tableBreakfast}/>
+                }
+            </div>
         </div>
         
     )
