@@ -55,18 +55,18 @@ export const MainTable=()=>{
     const setItemToAddTable = (selectedProduct: IOption | null) => {
         
         if (selectedProduct) {
+            // debugger
             setIsSelected(true)
             setNewItem({
                 sign: '/assets/foodCalculator/minus-circle.svg',
                 num: (tableItems.length + 1).toString(),
                 name: selectedProduct.label,
                 weight: weight,
-                protein: selectedProduct.protein * weight/100,
-                fat: selectedProduct.fat * weight/100,
-                carb: selectedProduct.carb * weight/100,
-                kcal: selectedProduct.kcal * weight/100
+                protein: selectedProduct.protein,
+                fat: selectedProduct.fat,
+                carb: selectedProduct.carb,
+                kcal: selectedProduct.kcal
             })
-
             setStockItem({
                 label: selectedProduct.label,
                 sign: '/assets/foodCalculator/minus-circle.svg',
@@ -78,11 +78,13 @@ export const MainTable=()=>{
                 carb: selectedProduct.carb,
                 kcal: selectedProduct.kcal 
             })
+            
         }
     }
 
     const handlePlusItem=()=>{
         if(weight!==0 && isSelected){
+            console.log(tableItems)
             setTableItems([...tableItems, newItem])
             setWeight(100)
             setIsSelected(false)
@@ -100,16 +102,18 @@ export const MainTable=()=>{
     }
 
     useEffect(()=>{
+        
         setNewItem({
             sign: '/assets/foodCalculator/minus-circle.svg',
             num: (tableItems.length + 1).toString(),
             name: stockItem.label,
             weight: weight,
-            protein: stockItem.protein * weight/100,
-            fat: stockItem.fat * weight/100,
-            carb: stockItem.carb * weight/100,
-            kcal: stockItem.kcal * weight/100
+            protein: stockItem.protein ,
+            fat: stockItem.fat,
+            carb: stockItem.carb ,
+            kcal: stockItem.kcal
         })
+        
     },[weight])
 
     return(
@@ -162,6 +166,20 @@ export const MainTable=()=>{
                     onChange={(e) => setWeight(Number(e.target.value))}
                 />
             </div>
+            <Table>
+                <TableBody>
+                    <TableRow>
+                        <TableCell className="text-center"></TableCell>
+                        <TableCell className="text-center"></TableCell>
+                        <TableCell className="text-center">Итого:</TableCell>
+                        <TableCell className="text-center"></TableCell>
+                        <TableCell className="text-center"></TableCell>
+                        <TableCell className="text-center"></TableCell>
+                        <TableCell className="text-center"></TableCell>
+                        <TableCell className="text-center"></TableCell>
+                    </TableRow>
+                </TableBody>
+            </Table>
         </div>
         
     )
