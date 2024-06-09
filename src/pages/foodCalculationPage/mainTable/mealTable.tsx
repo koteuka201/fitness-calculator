@@ -1,13 +1,15 @@
 import React,{useEffect, useState} from "react";
 import {ITableItem, INutric } from "./mainTable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { X } from "lucide-react";
 
 interface MealTableProps{
     label: string,
     meal: ITableItem[]
+    deleteTable: ()=>void
 }   
 
-export const MealTable: React.FC<MealTableProps> = ({label, meal})=>{
+export const MealTable: React.FC<MealTableProps> = ({label, meal, deleteTable})=>{
 
     const [totals,setTotals]=useState<INutric>({
         protein: 0,
@@ -29,10 +31,10 @@ export const MealTable: React.FC<MealTableProps> = ({label, meal})=>{
     }, [meal])
 
     return(
-        <Card className="w-[80%]">
+        <Card className="w-full mt-[20px]">
             <CardHeader className="p-1">
-                <CardTitle className="text-[20px] ">
-                    {label}
+                <CardTitle className="text-[20px] flex pr-[24px] pl-[24px]">
+                    <div className="flex-grow">{label}</div> <X className="cursor-pointer ml-auto" onClick={deleteTable}/>
                 </CardTitle>
             </CardHeader>
             <CardContent>
@@ -43,10 +45,10 @@ export const MealTable: React.FC<MealTableProps> = ({label, meal})=>{
                     </div>
                 ))}
                 <div className="flex justify-between font-semibold">
-                    <div>Белки: {totals.protein} г</div>
-                    <div>Жиры {totals.fat} г</div>
-                    <div>Углеводы: {totals.carb} г</div>
-                    <div>Калории: {totals.kcal} ккал</div>
+                    <div>Белки: {totals.protein.toFixed(1)} г</div>
+                    <div>Жиры {totals.fat.toFixed(1)} г</div>
+                    <div>Углеводы: {totals.carb.toFixed(1)} г</div>
+                    <div>Калории: {totals.kcal.toFixed(1)} ккал</div>
                 </div>
             </CardContent>
         </Card>

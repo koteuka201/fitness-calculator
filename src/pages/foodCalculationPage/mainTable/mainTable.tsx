@@ -107,18 +107,67 @@ export const MainTable=()=>{
         if(tableItems.length>0){
         
             setTableBreakfast(tableItems)
-    
             setMealAdded({
                 ...mealAdded,
                 breakfast: true
             })
+            setTableItems([])
         }
         
     }
 
+    const handleDeleteBF=()=>{
+        setTableBreakfast([])
+        setMealAdded({
+            ...mealAdded,
+            breakfast: false
+        })
+    }
+
+    const handleSetLunch=()=>{
+        if(tableItems.length>0){
+        
+            setTableLunch(tableItems)
+            setMealAdded({
+                ...mealAdded,
+                lunch: true
+            })
+            setTableItems([])
+        }
+        
+    }
+
+    const handleDeleteLunch=()=>{
+        setTableLunch([])
+        setMealAdded({
+            ...mealAdded,
+            lunch: false
+        })
+    }
+
+    const handleSetDinner=()=>{
+        if(tableItems.length>0){
+        
+            setTableDinner(tableItems)
+            setMealAdded({
+                ...mealAdded,
+                dinner: true
+            })
+            setTableItems([])
+        }
+        
+    }
+
+    const handleDeleteDinner=()=>{
+        setTableDinner([])
+        setMealAdded({
+            ...mealAdded,
+            dinner: false
+        })
+    }
+
     const handlePlusItem=()=>{
         if(weight!==0 && isSelected){
-            console.log(tableItems)
             setTableItems([...tableItems, newItem])
             setWeight(100)
             setIsSelected(false)
@@ -134,6 +183,8 @@ export const MainTable=()=>{
 
         setTableItems(tableWithDecreaseNums)
     }
+
+    
 
     useEffect(()=>{
         
@@ -163,7 +214,7 @@ export const MainTable=()=>{
     }, [tableItems])
 
     return(
-        <div className="mt-[36px]">
+        <div className="mt-[36px] mb-[50px]">
             <div className="flex justify-end">
                 <DropdownMenu >
                     <DropdownMenuTrigger asChild>
@@ -180,12 +231,12 @@ export const MainTable=()=>{
                                 <span className="text-gray-500 font-semibold ml-1">Завтрак</span>
                                 <DropdownMenuShortcut><CirclePlus className="cursor-pointer w-[20px] h-[20px]"/></DropdownMenuShortcut>
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={handleSetLunch}>
                                 <Beef className="w-[16px] h-[16px]"/>
                                 <span className="text-gray-500 font-semibold ml-1">Обед</span>
                                 <DropdownMenuShortcut><CirclePlus className="cursor-pointer w-[20px] h-[20px]"/></DropdownMenuShortcut>
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={handleSetDinner}>
                                 <Apple className="w-[16px] h-[16px]"/>
                                 <span className="text-gray-500 font-semibold ml-1">Ужин</span>
                                 <DropdownMenuShortcut><CirclePlus className="cursor-pointer w-[20px] h-[20px]"/></DropdownMenuShortcut>
@@ -256,11 +307,18 @@ export const MainTable=()=>{
                     </TableBody>
                 </Table>
             }
-            <div className="flex justify-center mt-[56px]">
+            <div className="mt-[56px]">
                 
-                {mealAdded.breakfast &&
-                    <MealTable label={'Завтрак'} meal={tableBreakfast}/>
-                }
+                    {mealAdded.breakfast &&
+                        <MealTable label={'Завтрак'} meal={tableBreakfast} deleteTable={handleDeleteBF}/>
+                    }
+                    {mealAdded.lunch &&
+                        <MealTable label={'Обед'} meal={tableLunch} deleteTable={handleDeleteLunch}/>
+                    }
+                    {mealAdded.dinner &&
+                        <MealTable label={'Ужин'} meal={tableDinner} deleteTable={handleDeleteDinner}/>
+                    }
+                
             </div>
         </div>
         
