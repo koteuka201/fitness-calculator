@@ -10,6 +10,7 @@ export const Router=()=>{
             <Route path="/" element={
                 <>
                     <Header/>
+                    <SelfCalculationPage/>
                 </>
             }/>
             <Route path="/selfCalculation" element={
