@@ -211,7 +211,7 @@ export const SelfForm=()=>{
                 <div id="result" className="mt-[30px]">  
                     <span className="text-[30px]">&#8226;</span>
                     <span className="text-xl ml-2">Ваш результат:</span>
-                    <div className="mb-[100px] ">
+                    <div className="">
                         <IMBCard IMB={GetIMB(imb.weight,imb.height)}/>
                         <CircleChart result={result}/>
                     </div>
