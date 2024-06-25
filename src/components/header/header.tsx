@@ -13,7 +13,7 @@ export const Header=()=>{
             </div>
             <div className="flex">
                 <span className="mr-20"  style={{cursor: 'pointer'}}>
-                    <Link to='/selfCalculation' className={location.pathname==='/selfCalculation' ? 'font-bold' : ''}>
+                    <Link to='/selfCalculation' className={location.pathname==='/selfCalculation' || location.pathname==='/' ? 'font-bold' : ''}>
                         Калькулятор приемов пищи
                     </Link>
                     
