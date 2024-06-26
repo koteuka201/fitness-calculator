@@ -1,10 +1,11 @@
-import React,{useEffect, useState} from "react";
-import { SelectComponent, IOption } from "./select";
+import {useEffect, useState} from "react";
+import { IOption } from "./select";
 import { MealTable } from "./mealTable";
 import { DropDownMenu } from "./dropDownMenu";
 import { CentralTable } from "./centralTable";
 import { AddNewProduct } from "./addNewProduct";
 import { TotalNutricientsTable } from "./totalNutricientsTable";
+import { NutricientsPerDay } from "./nutricientsPerDay";
 
 export interface ITableItem {
     sign: string;
@@ -109,6 +110,7 @@ export const MainTable=()=>{
                 breakfast: true
             })
             setTableItems([])
+            
         }
         
     }
@@ -198,14 +200,14 @@ export const MainTable=()=>{
 
     useEffect(() => {
         const newTotals = tableItems.reduce((acc, item) => {
-            acc.protein += (item.protein * item.weight / 100);
-            acc.fat += (item.fat * item.weight / 100);
-            acc.carb += (item.carb * item.weight / 100);
-            acc.kcal += (item.kcal * item.weight / 100);
-            return acc;
-        }, { protein: 0, fat: 0, carb: 0, kcal: 0 });
+            acc.protein += (item.protein * item.weight / 100)
+            acc.fat += (item.fat * item.weight / 100)
+            acc.carb += (item.carb * item.weight / 100)
+            acc.kcal += (item.kcal * item.weight / 100)
+            return acc
+        }, { protein: 0, fat: 0, carb: 0, kcal: 0 })
 
-        setTotals(newTotals);
+        setTotals(newTotals)
     }, [tableItems])
 
     return(
@@ -219,16 +221,18 @@ export const MainTable=()=>{
                 <TotalNutricientsTable totals={totals} />
             }
             <div className="mt-[56px]">
-                
-                    {mealAdded.breakfast &&
-                        <MealTable label={'Завтрак'} meal={tableBreakfast} deleteTable={handleDeleteBF}/>
-                    }
-                    {mealAdded.lunch &&
-                        <MealTable label={'Обед'} meal={tableLunch} deleteTable={handleDeleteLunch}/>
-                    }
-                    {mealAdded.dinner &&
-                        <MealTable label={'Ужин'} meal={tableDinner} deleteTable={handleDeleteDinner}/>
-                    }
+                {(mealAdded.breakfast || mealAdded.lunch || mealAdded.dinner) &&
+                    <NutricientsPerDay/>
+                }
+                {mealAdded.breakfast &&
+                    <MealTable label={'Завтрак'} meal={tableBreakfast} deleteTable={handleDeleteBF}/>
+                }
+                {mealAdded.lunch &&
+                    <MealTable label={'Обед'} meal={tableLunch} deleteTable={handleDeleteLunch}/>
+                }
+                {mealAdded.dinner &&
+                    <MealTable label={'Ужин'} meal={tableDinner} deleteTable={handleDeleteDinner}/>
+                }
                 
             </div>
         </div>

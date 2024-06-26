@@ -2,6 +2,7 @@ import React,{useEffect, useState} from "react";
 import {ITableItem, INutric } from "./mainTable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { X } from "lucide-react";
+import { useStore } from "@/store/store";
 
 interface MealTableProps{
     label: string,
@@ -18,23 +19,30 @@ export const MealTable: React.FC<MealTableProps> = ({label, meal, deleteTable})=
         kcal: 0
     })
 
+    const {addNutricients, deleteNutricients}=useStore()
+
+    const handleDeleteClick=()=>{
+        deleteTable()
+        deleteNutricients(totals)
+    }
+
     useEffect(() => {
         const newTotals = meal.reduce((acc, item) => {
-            acc.protein += (item.protein * item.weight / 100);
-            acc.fat += (item.fat * item.weight / 100);
-            acc.carb += (item.carb * item.weight / 100);
-            acc.kcal += (item.kcal * item.weight / 100);
-            return acc;
-        }, { protein: 0, fat: 0, carb: 0, kcal: 0 });
-
-        setTotals(newTotals);
+            acc.protein += (item.protein * item.weight / 100)
+            acc.fat += (item.fat * item.weight / 100)
+            acc.carb += (item.carb * item.weight / 100)
+            acc.kcal += (item.kcal * item.weight / 100)
+            return acc
+        }, { protein: 0, fat: 0, carb: 0, kcal: 0 })
+        addNutricients(newTotals)
+        setTotals(newTotals)
     }, [meal])
 
     return(
         <Card className="w-full mt-[20px]">
             <CardHeader className="p-1">
                 <CardTitle className="text-[20px] flex pr-[24px] pl-[24px]">
-                    <div className="flex-grow">{label}</div> <X className="cursor-pointer ml-auto" onClick={deleteTable}/>
+                    <div className="flex-grow">{label}</div> <X className="cursor-pointer ml-auto" onClick={handleDeleteClick}/>
                 </CardTitle>
             </CardHeader>
             <CardContent>
