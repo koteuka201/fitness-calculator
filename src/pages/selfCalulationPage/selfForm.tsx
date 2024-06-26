@@ -8,6 +8,8 @@ import { calculateCalories } from "@/helpers/calculateCalories";
 import { CircleChart } from "./results/circleChart";
 import { IMBCard } from "./results/IMBCard";
 import { GetIMB } from "@/helpers/getIMB";
+import { useLogsStore } from "@/store/store";
+import { INutric } from "../foodCalculationPage/mainTable/mainTable";
 
 export interface Idata{
     activity: number,
@@ -43,12 +45,15 @@ export const SelfForm=()=>{
         height: 0,
         weight: 0
     })
-    const [result, setResult] = useState<ICalculate>({
-        calories: 0,
+    const [result, setResult] = useState<INutric>({
+        
         protein: 0,
         fat: 0,
-        carb: 0
+        carb: 0,
+        kcal: 0,
     });
+
+    const {addLog}= useLogsStore()
 
     const handleSliderChange = (newValue: number[]) => {
         setSliderValue(newValue);
@@ -84,8 +89,19 @@ export const SelfForm=()=>{
                 height: height,
                 weight: weight
             }
+            
             setResult(calculateCalories(data))
             setImb(imbData)
+
+            const log={
+                date: (new Date()).toISOString(),
+                height: height,
+                weight: weight,
+                target: target,
+                log: calculateCalories(data)
+            } 
+            
+            addLog(log)
 
             setTimeout(() => {
                 const element = document.getElementById('result')
@@ -94,14 +110,10 @@ export const SelfForm=()=>{
                     element.scrollIntoView({ behavior: 'smooth' })
                 }
             }, 1);
-            
-            
-        }
-        
-        
+        } 
     }
     return(
-        <form className="mt-[55px] text-start font-bold w-[536px]" onSubmit={handleSubmit}>
+        <form className="mt-[25px] text-start font-bold w-[536px]" onSubmit={handleSubmit}>
             
             <div>
                 <span className="text-[30px]">&#8226;</span>
@@ -170,7 +182,7 @@ export const SelfForm=()=>{
                 <span className="text-[30px]">&#8226;</span>
                 <span className="text-xl ml-2">Дневная активность:</span>
                 <Slider 
-                    className="ml-[20px] mt-[20px] w-[516px]"
+                    className="ml-[20px] mt-[20px] w-[516px] cursor-pointer"
                     value={sliderValue}
                     min={20}
                     max={90}
@@ -203,7 +215,7 @@ export const SelfForm=()=>{
                     >Набрать вес</Button>
                 </div>
             </div>
-            <Button type="submit" className="w-[540px] mt-[50px]">
+            <Button type="submit" className="w-[540px] mt-[30px]">
                 <img src="/assets/selfCalculator/calculator.svg" className="w-[22px] h-[22px]" alt="" />
                 <span className="ml-[2px]">РАССЧИТАТЬ</span>
             </Button>

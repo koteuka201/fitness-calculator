@@ -10,11 +10,11 @@ export const IMBModal: React.FC<IMBInfoModalProps> = ({ isOpen, onClose }) => {
     <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent>
             <DialogHeader>
-            <DialogTitle className='text-center'>
-              Информация об ИМТ (Индекс массы тела) 
-              
-              <div className='text-center text-[14px] mt-[10px] w-[460px] text-gray-700'>ИМТ=Вес(кг)/Рост (м)²</div>
-            </DialogTitle>
+              <DialogTitle className='text-center'>
+                Информация об ИМТ (Индекс массы тела) 
+                
+                <div className='text-center text-[14px] mt-[10px] w-[460px] text-gray-700'>ИМТ=Вес(кг)/Рост (м)²</div>
+              </DialogTitle>
             </DialogHeader>
             <DialogDescription>
                 <span>Индекс массы тела - это величина, которая отражает соотношение веса человека и его роста. Она помогает определить, насколько масса тела соответствует норме.</span>

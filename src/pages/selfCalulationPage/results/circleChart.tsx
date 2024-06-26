@@ -1,12 +1,12 @@
 import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from "react-chartjs-2";
-import { ICalculate } from '../selfForm';
 import { Card, CardTitle } from '@/components/ui/card';
+import { INutric } from '@/pages/foodCalculationPage/mainTable/mainTable';
 
 Chart.register(ArcElement, Tooltip, Legend);
 
 interface CircleChartProps {
-    result: ICalculate;
+    result: INutric;
 }
 
 export const CircleChart: React.FC<CircleChartProps> = ({ result }) => {
@@ -14,7 +14,7 @@ export const CircleChart: React.FC<CircleChartProps> = ({ result }) => {
         <Card className='mt-[20px] p-5 shadow-md border-0' style={{position: 'relative'}}>
             
             <CardTitle className="text-center text-[17px]">
-                Ваша индивидуальная суточная норма калорий: <span className="text-slate-500">{result.calories.toFixed(2)}</span> кКал <br></br>
+                Ваша индивидуальная суточная норма калорий: <span className="text-slate-500">{result.kcal.toFixed(2)}</span> кКал <br></br>
                 Из которых:
             </CardTitle>
             <div>
