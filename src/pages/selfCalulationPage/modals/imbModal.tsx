@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dialog, DialogOverlay,DialogTrigger, DialogHeader, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Dialog,  DialogHeader, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 interface IMBInfoModalProps {
   isOpen: boolean;
   onClose: () => void;

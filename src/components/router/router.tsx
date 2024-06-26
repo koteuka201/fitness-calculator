@@ -1,4 +1,3 @@
-import React from "react";
 import { Route, Routes } from "react-router";
 import { Header } from "../header/header";
 import { SelfCalculationPage } from "@/pages/selfCalulationPage/selfCalulationPage";

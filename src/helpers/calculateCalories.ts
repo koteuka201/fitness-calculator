@@ -1,8 +1,8 @@
-import { Typedata } from "@/pages/selfCalulationPage/selfForm";
-import { TypeCalculate } from "@/pages/selfCalulationPage/selfForm";
+import { Idata } from "@/pages/selfCalulationPage/selfForm";
+import { ICalculate } from "@/pages/selfCalulationPage/selfForm";
 
-export function calculateCalories(data: Typedata) : TypeCalculate {
-    let nutrients: TypeCalculate={
+export function calculateCalories(data: Idata) : ICalculate {
+    let nutrients: ICalculate={
         calories: 0,
         protein: 0,
         fat: 0,
