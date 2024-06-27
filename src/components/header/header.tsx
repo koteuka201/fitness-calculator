@@ -13,13 +13,13 @@ export const Header=()=>{
             <div className="flex">
                 <span className="mr-20"  style={{cursor: 'pointer'}}>
                     <Link to='/selfCalculation' className={location.pathname==='/selfCalculation' || location.pathname==='/' ? 'font-bold' : ''}>
-                        Калькулятор приемов пищи
+                        Калькулятор нормы калорий
                     </Link>
                     
                 </span>
                 <span style={{cursor: 'pointer'}}>
                     <Link to='/foodCalculation' className={location.pathname==='/foodCalculation' ? 'font-bold' : ''}>
-                    Калькулятор нормы калорий
+                        Калькулятор приемов пищи
                     </Link>
                 </span>
             </div>
